@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Language Model Can Listen While Speaking</title>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <script src="jquery-3.5.js"></script>
+    </head>
+    <body>
+<div class="container">
+    <div id="text1">Language Model Can Listen While Speaking</div>
+    <div id="intro">
+        <br>
+        <p>
+        Ziyang Ma<sup>1,2</sup>, akun Song<sup>1,2</sup>, Chenpeng Du<sup>2</sup>, Jian Cong<sup>2</sup>, Zhuo Chen<sup>2</sup>, Yuping Wang<sup>2</sup>, Yuxuan Wang<sup>2</sup>, Xie Chen<sup>1</sup><sup>*</sup>
+        </p>
+        <p>
+            <sup>1</sup>MoE Key Lab of Artificial Intelligence, X-LANCE Lab, Shanghai Jiao Tong University<br>
+            <sup>2</sup> ByteDance Inc.
+        </p>
+        <p>
+            [<a href="", target='_blank'>Paper Link</a>]
+        </p>
+    </div>
+</div>
+<div class="content-container">
+    <div class="content-title">Full Duplex Modeling (FDM)</div>
+    <img src="./pic/duplex.png" style="width:60%">
+    <p>
+        Illustration of simplex, half duplex, and full duplex speech language models.  (A): Simplex speech language model with listening ability. (B): Simplex speech language model with speaking ability. (C): Half duplex speech language model with both listening and speaking abilities. (D): Full duplex speech language model can listen while speaking. 
+    </p>
+</div>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<div class="content-container">
+    <script src="wavesurfer.js"></script>
+<div class="content-title">Demo</div>
+    <p><b>Vanilla TTS</b></p>
+    <div id="vanilla_tts_waveform"></div>
+    <button id="vanilla_tts" class="play-button-demo btn btn-primary" onclick="wavesurfer_vanilla_tts.playPause()">
+        <i class="fa fa-play"></i>
+        Play
+        /
+        <i class="fa fa-pause"></i>
+        Pause
+    </button>
+    <script>
+        var wavesurfer_vanilla_tts = WaveSurfer.create({
+                    container: '#vanilla_tts_waveform',
+                    waveColor: 'violet',
+                    progressColor: 'purple',
+                    splitChannels: true,
+                    responsive: true,
+                });
+                wavesurfer_vanilla_tts.load('./audio/test.wav');
+    </script>
+
+    <p><b>LSLM in clean condition</b></p>
+    <div id="lslm_clean_waveform"></div>
+    <button id="lslm_clean" class="play-button-demo btn btn-primary" onclick="wavesurfer_lslm_clean.playPause()">
+        <i class="fa fa-play"></i>
+        Play
+        /
+        <i class="fa fa-pause"></i>
+        Pause
+    </button>
+    <script>
+        var wavesurfer_lslm_clean = WaveSurfer.create({
+                    container: '#lslm_clean_waveform',
+                    waveColor: 'violet',
+                    progressColor: 'purple',
+                    splitChannels: true,
+                    responsive: true,
+                });
+                wavesurfer_lslm_clean.load('./audio/test.wav');
+    </script>
+
+    <p><b>LSLM in noisy condition</b></p>
+    <div id="lslm_noisy_waveform"></div>
+    <button id="lslm_noisy" class="play-button-demo btn btn-primary" onclick="wavesurfer_lslm_noisy.playPause()">
+        <i class="fa fa-play"></i>
+        Play
+        /
+        <i class="fa fa-pause"></i>
+        Pause
+    </button>
+    <script>
+        var wavesurfer_lslm_noisy = WaveSurfer.create({
+                    container: '#lslm_noisy_waveform',
+                    waveColor: 'violet',
+                    progressColor: 'purple',
+                    splitChannels: true,
+                    responsive: true,
+                });
+                wavesurfer_lslm_noisy.load('./audio/test.wav');
+    </script>
+
+</div>
+
+<div class="content-container">
+    <div class="content-title">Proposed LSLM</div>
+    <img src="./pic/model-model.png" style="width:60%">
+    <p>
+        To engage Full Duplex Modeling (FDM) capability for interactive Speech Language Models (iSLM), we propose Listening-while-Speaking Language Model (LSLM), an end-to-end model with both listening and speaking channels. 
+        The proposed LSLM uses a token-based decoder-only TTS to model the ability to speak and a streaming self-supervised learning (SSL) encoder to model the ability to listen. 
+        LSLM fuses these two channels and detects turn-taking in real time.
+        We explore three strategies for fusing duplex signals: Early Fusion, Middle Fusion, and Late Fusion. 
+        Two experimental settings, command-based FDM and voice-based FDM, demonstrate LSLM's robustness to noise and sensitivity to diverse instructions. 
+        For more details, please refer to our paper.
+    </p>
+</div>
+
+
+<script>
+        var mode = 0;
+        var audio;
+        var filename = null;
+        function play(file_name) {
+            if (filename !== file_name) {
+                if (audio) {
+                    audio.pause();
+                }
+
+                audio = new Audio(file_name);
+                filename = file_name;
+                audio.play();
+            } else {
+                if (audio.paused ) {
+                    audio = new Audio(file_name);
+                    filename = file_name;
+                    audio.play();
+                } else {
+                    audio.pause();
+                }
+            }
+        }
+        function play2(file_name, button_id) {
+            var bttn_element = document.getElementById(button_id);
+            if (filename !== file_name) {
+                if (audio) {
+                    audio.pause();
+                    bttn_element.style.background = 'lightgray';
+                }
+
+                audio = new Audio(file_name);
+                filename = file_name;
+                audio.play();
+                bttn_element.style.background = 'orange';
+            } else {
+                
+                if (audio.paused ) {
+                    audio = new Audio(file_name);
+                    filename = file_name;
+                    audio.play();
+                    bttn_element.style.background = 'orange';
+                } else {
+                    audio.pause();
+                    bttn_element.style.background = 'lightgray';
+                }
+            }
+        }
+        function switchMode() {
+            if (document.getElementById("myonoffswitch").checked) {
+                mode = 0;
+            }
+            else {
+                mode = 1;
+            }
+        }
+    </script>
+
+<div class="content-container">
+    Template based on <a style="color:rgb(22, 38, 67)"  href="https://speechbot.github.io/dgslm/index.html"> dGSLM</a> page.  
+</div>
+</body>
+</html>
