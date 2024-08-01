@@ -12,30 +12,42 @@
     <div id="intro">
         <br>
         <p>
-        Ziyang Ma<sup>1,2</sup>, akun Song<sup>1,2</sup>, Chenpeng Du<sup>2</sup>, Jian Cong<sup>2</sup>, Zhuo Chen<sup>2</sup>, Yuping Wang<sup>2</sup>, Yuxuan Wang<sup>2</sup>, Xie Chen<sup>1</sup><sup>*</sup>
+        Ziyang Ma<sup>1,2</sup>, Yakun Song<sup>1,2</sup>, Chenpeng Du<sup>2</sup>, Jian Cong<sup>2</sup>, Zhuo Chen<sup>2</sup>, Yuping Wang<sup>2</sup>, Yuxuan Wang<sup>2</sup>, Xie Chen<sup>1</sup><sup>*</sup>
         </p>
         <p>
             <sup>1</sup>MoE Key Lab of Artificial Intelligence, X-LANCE Lab, Shanghai Jiao Tong University<br>
             <sup>2</sup> ByteDance Inc.
         </p>
         <p>
-            [<a href="", target='_blank'>Paper Link</a>]
+            [<a href="", target='_blank'>Paper</a>][<a href="", target='_blank'>Demo</a>]
         </p>
     </div>
 </div>
+
 <div class="content-container">
-    <div class="content-title">Full Duplex Modeling (FDM)</div>
-    <img src="./pic/duplex.png" style="width:60%">
+    <div style="text-align: center;">
+        TODO: Video Demo
+    </div>
+    <div class="content-title">Abstract</div>
     <p>
-        Illustration of simplex, half duplex, and full duplex speech language models.  (A): Simplex speech language model with listening ability. (B): Simplex speech language model with speaking ability. (C): Half duplex speech language model with both listening and speaking abilities. (D): Full duplex speech language model can listen while speaking. 
+        Dialogue serves as the most natural manner of human-computer interaction (HCI).
+        Recent advancements in speech language models (SLM), have significantly enhanced speech-based conversational AI. 
+        However, these models are limited to turn-based conversation, lacking the ability to interact with humans in real-time spoken scenarios, for example, being interrupted when the generated content is not satisfactory. 
+        To address these limitations, we explore <strong>Full Duplex Modeling (FDM)</strong> in interactive speech language models (iSLM), focusing on enhancing real-time interaction and, more explicitly, exploring the quintessential ability of interruption. 
+        We introduce a novel model design, namely <strong>Listening-while-Speaking Language Model (LSLM)</strong>, an end-to-end system equipped with both listening and speaking channels. 
+        Our LSLM employs a token-based decoder-only TTS for speech generation and a streaming self-supervised learning (SSL) encoder for real-time audio input. 
+        LSLM fuses both channels for autoregressive generation and detects turn-taking in real time. 
+        Three fusion strategies—<strong>Early Fusion, Middle Fusion, and Late Fusion</strong>—are explored, with middle fusion achieving an optimal balance between speech generation and real-time interaction. 
+        Two experimental settings, <strong>Command-based FDM</strong> and <strong>Voice-based FDM</strong>, demonstrate LSLM's robustness to noise and sensitivity to diverse instructions. 
+        Our results highlight LSLM's capability to achieve duplex communication with minimal impact on existing systems. 
+        This study aims to advance the development of interactive speech dialogue systems, enhancing their applicability in real-world contexts. 
     </p>
 </div>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 <div class="content-container">
     <script src="wavesurfer.js"></script>
 <div class="content-title">Demo</div>
-    <p><b>Vanilla TTS</b></p>
+    <p><b>Vanilla TTS <i>without real-time listening ability</i></b></p>
     <div id="vanilla_tts_waveform"></div>
     <button id="vanilla_tts" class="play-button-demo btn btn-primary" onclick="wavesurfer_vanilla_tts.playPause()">
         <i class="fa fa-play"></i>
@@ -52,10 +64,10 @@
                     splitChannels: true,
                     responsive: true,
                 });
-                wavesurfer_vanilla_tts.load('./audio/test.wav');
+                wavesurfer_vanilla_tts.load('./audio/vanilla_tts.wav');
     </script>
 
-    <p><b>LSLM in clean condition</b></p>
+    <p><b>LSLM <i>in clean condition</i></b></p>
     <div id="lslm_clean_waveform"></div>
     <button id="lslm_clean" class="play-button-demo btn btn-primary" onclick="wavesurfer_lslm_clean.playPause()">
         <i class="fa fa-play"></i>
@@ -72,10 +84,10 @@
                     splitChannels: true,
                     responsive: true,
                 });
-                wavesurfer_lslm_clean.load('./audio/test.wav');
+                wavesurfer_lslm_clean.load('./audio/lslm_clean.wav');
     </script>
 
-    <p><b>LSLM in noisy condition</b></p>
+    <p><b>LSLM <i>in noisy condition</i></b></p>
     <div id="lslm_noisy_waveform"></div>
     <button id="lslm_noisy" class="play-button-demo btn btn-primary" onclick="wavesurfer_lslm_noisy.playPause()">
         <i class="fa fa-play"></i>
@@ -92,24 +104,44 @@
                     splitChannels: true,
                     responsive: true,
                 });
-                wavesurfer_lslm_noisy.load('./audio/test.wav');
+                wavesurfer_lslm_noisy.load('./audio/lslm_noisy.wav');
     </script>
 
 </div>
 
 <div class="content-container">
-    <div class="content-title">Proposed LSLM</div>
-    <img src="./pic/model-model.png" style="width:60%">
+    <div class="content-title">Full Duplex Modeling (FDM)</div>
+    <img src="./pic/duplex.png" style="width:60%">
     <p>
-        To engage Full Duplex Modeling (FDM) capability for interactive Speech Language Models (iSLM), we propose Listening-while-Speaking Language Model (LSLM), an end-to-end model with both listening and speaking channels. 
-        The proposed LSLM uses a token-based decoder-only TTS to model the ability to speak and a streaming self-supervised learning (SSL) encoder to model the ability to listen. 
-        LSLM fuses these two channels and detects turn-taking in real time.
-        We explore three strategies for fusing duplex signals: Early Fusion, Middle Fusion, and Late Fusion. 
-        Two experimental settings, command-based FDM and voice-based FDM, demonstrate LSLM's robustness to noise and sensitivity to diverse instructions. 
-        For more details, please refer to our paper.
+        Illustration of simplex, half duplex, and full duplex speech language models. <br> 
+        (A): Simplex speech language model with listening ability. <br>
+        (B): Simplex speech language model with speaking ability. <br>
+        (C): Half duplex speech language model with both listening and speaking abilities. <br>
+        (D): Full duplex speech language model can listen while speaking. 
     </p>
 </div>
 
+<div class="content-container">
+    <div class="content-title">Proposed LSLM</div>
+    <img src="./pic/model-model.png" style="width:50%">
+    <p>
+        The proposed LSLM uses a token-based decoder-only TTS to model the ability to speak and a streaming self-supervised learning (SSL) encoder to model the ability to listen. 
+        LSLM fuses these two channels and detects turn-taking in real time. 
+    </p>
+    <img src="./pic/model-fusion.png" style="width:80%">
+    <p>
+        To comprehensively explore the integration of a listening channel to the proposed LSLM, we try to fuse the listening channel and the speaking channel with early, middle, and late methods. <br> 
+        <strong>Early Fusion</strong> integrates the listening and speaking channels at the input embeddings before autoregressive prediction. <br> 
+        <strong>Middle Fusion</strong> merges the listening and speaking channels at each Transformer block. <br> 
+        <strong>Late Fusion</strong> combines the channels at the output logits before the softmax operation. 
+    </p>
+    <p>
+        We tested the FDM ability of the proposed LSLM in two scenarios: <strong>Command-based FDM</strong> and <strong>Voice-based FDM</strong>. Experiments indicate that our proposed LSLM can achieve duplexing capability with little impact on the previous system. <br> 
+        For more details, please refer to our paper: Language Model Can Listen While Speaking.
+    </p>
+</div>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 <script>
         var mode = 0;
